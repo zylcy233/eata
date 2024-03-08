@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>注册页面</title>
+<meta name="applicable-device" content="mobile">
+<meta name="viewport"
+	content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name='apple-touch-fullscreen' content='yes'>
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+	<script src="js/jquery.min.js"></script>
+<!-- 重要不能删 -->
+<link
+	href="css/mtc.css"
+	rel="stylesheet">
+<style>
+.nav {
+	text-align: center;
+}
+.taba li.active {
+	font-family: PingFangSC-Medium;
+	font-size: 0.25rem;
+	color: #222222;
+}
+.taba li a.react {
+	font-size: 0.25rem;
+	color: #222222;
+}
+.navbar {
+	height: 1.01rem;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	position: relative;
+	background-image: linear-gradient(135deg, #FFD000 0%, #FFBD00 100%);
+	border: none;
+}
+.navbar .h1.nav-header {
+	font-family: PingFangSC-Regular;
+	font-size: 0.32rem;
+	color: #222222;
+}
+@media ( max-device-height : 480px) {
+	.msg-doc {
+		bottom: auto;
+		top: 20%;
+	}
+	.msg-doc .msg-bd {
+		padding: .2rem;
+	}
+}
+</style>
+<script type="text/javascript">
+var xmlHttp=null;
+function check(zymemid){
+	//第一步：创建异步通信对象
+	if(xmlHttp==null){
+		xmlHttp=new XMLHttpRequest();
+	}
+	//第二步：设定回调函数处理请求结果 
+	xmlHttp.onreadystatechange=function(){
+		//当 readyState 等于 4 且状态为 200 时，表示响应已就绪。
+		if (xmlHttp.readyState==4 && xmlHttp.status==200){
+			var res=xmlHttp.responseText;//responseText,获得字符串形式的响应数据。
+			//document.getElementById("ts").innerHTML=res;    //显示账号注册
+			if(res.indexOf("have")!=-1){
+				document.getElementById("register").disabled="disabled";
+				document.getElementById("ts").innerHTML="账号已被占用";
+			}else {
+				document.getElementById("register").disabled="";
+				document.getElementById("ts").innerHTML="账号可用";
+			}
+			//alert(xmlHttp.responseText);
+		}
+	}
+	//第三步：发送异步请求
+	/*open(method,url,async)	规定请求的类型、URL 以及是否异步处理请求。
+	method：请求的类型；GET 或 POST  url：文件在服务器上的位置     async：true（异步）或 false（同步）*/
+	xmlHttp.open("get","member/check?zymemid="+zymemid);
+	xmlHttp.send(null);
+}
+
+function isPass(str){
+	if(str==null||str.length<6||str.length>12)
+		return false;
+	var count_n=0;
+	var count_l=0;
+	for(var i=0;i<str.length;i++){
+		var ch=str.charAt(i);
+		if(ch>='0'&&ch<='9'){
+			count_n++;
+		}else if((ch>='a'&&ch<='z')||(ch>='A'&&ch<='Z')){
+			count_l++;
+		}else{
+			return false;
+		}
+	}
+	return count_n>0&&count_l>0;
+}
+function confrim(frm){
+	var zymempass=frm.zymempass.value;
+	var cfmpass=frm.cfmpass.value;
+	
+	if(!isPass(zymempass)){
+		document.getElementById("ts").innerHTML="密码格式不正确.提示：数字加字母长度为【6-12】";
+		return false;
+	}
+	if(zymempass!=cfmpass){
+		document.getElementById("ts").innerHTML="两次输入密码不一致";
+		return false;
+	}
+	return true;
+}
+
+function register1(){
+	if(!confrim($("#registerform")[0])) return
+	var registerform=new FormData($("#registerform")[0])
+	//调用校验函数，校验成功
+	$.ajax(
+			{
+				type:'POST',
+				url:"member/register",
+				data: registerform,
+				processData:false,
+				contentType:false,
+				success:function(result){
+					if(result.indexOf("success")!=-1)
+						window.location.href="login.html";
+					else
+						$("#ts").html("注册失败");
+
+				},
+				error:function (e) {
+					console.log(e)
+				}
+			}
+	);
+}
+
+</script>
+</head>
+<body id="account-login" data-com="pagecommon" data-page-id="100040"
+	data-iswebview='false'>
+	<header class="navbar">
+		<span class="nav-header h1">注册</span>
+	</header>
+	<div id="login">
+		<dl class="list">
+			<dd class="nav">
+				<ul class="taba taban samfix" data-com="tab">
+					<li class="active"><a class="react" id="ts">帐号注册</a>
+				</ul>
+			</dd>
+		</dl>
+		<form id="registerform"  autocomplete="off"  onsubmit="return confrim(this)"
+			method="post" style="display: block">
+			<input type="hidden" id="op" name="op" value="register">
+			<dl class="list list-in">
+				<dd class="visibale">
+					<dl>
+						<dd class="dd-padding kv-line-r">
+							<input id="zymemid"
+								class="input-weak J-login-name J-input J-account" type="text"
+								placeholder="账户名/Email" name="zymemid" onkeyup="check(this.value)" value="" required>
+							<div class="to-del J-to-del" style="display: none"></div>
+						</dd>
+						<dd class="dd-padding kv-line-r">
+							<input id="zymempass" class="input-weak J-input" type="password"
+								placeholder="请输入您的密码" name="zymempass" required />
+							<div class="to-del J-to-del" style="display: none"></div>
+						</dd>
+						<dd class="dd-padding kv-line-r">
+							<input id="cfmpass" class="input-weak J-input" type="password"
+								placeholder="请确认您的密码" name="cfmpass" required />
+							<div class="to-del J-to-del" style="display: none"></div>
+						</dd>
+						<dd class="dd-padding kv-line-r">
+							<input id="zymemalias" class="input-weak J-input" type="text"
+								placeholder="昵称" name="zymemalias" required />
+							<div class="to-del J-to-del" style="display: none"></div>
+						</dd>
+					</dl>
+				</dd>
+			</dl>
+			<div class="btn-wrapper">
+				<button type="button" disabled="disabled" id="register" onclick="register1()"
+					class="btn btn-normal btn-block disabled mj_login login-btn">注册</button>
+			</div>
+		</form>
+	</div>
+	<ul class="subline" style="text-align: center;">
+        <li><a href="login.html">立即登录</a>
+    </ul>
+</body>
+</html>

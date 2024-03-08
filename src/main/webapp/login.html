@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>登录页面</title>
+<meta name="applicable-device" content="mobile">
+<meta name="viewport"
+	content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name='apple-touch-fullscreen' content='yes'>
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<!-- 重要不能删 -->
+<link href="css/mtc.css" rel="stylesheet">
+<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/qrcode.js"></script>
+<style>
+.nav {
+	text-align: center;
+}
+.taba li.active {
+	font-family: PingFangSC-Medium;
+	font-size: 0.25rem;
+	color: #222222;
+}
+.taba li a.react {
+	font-size: 0.25rem;
+	color: #222222;
+}
+.navbar {
+	height: 1.01rem;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	position: relative;
+	background-image: linear-gradient(135deg, #FFD000 0%, #FFBD00 100%);
+	border: none;
+}
+.navbar .h1.nav-header {
+	font-family: PingFangSC-Regular;
+	font-size: 0.32rem;
+	color: #222222;
+}
+@media ( max-device-height : 480px) {
+	.msg-doc {
+		bottom: auto;
+		top: 20%;
+	}
+	.msg-doc .msg-bd {
+		padding: .2rem;
+	}
+}
+</style>
+
+<script type="text/javascript">
+function login(){
+	//获取value
+	var zymemid=$("#zymemid").val();
+	var zymempass=$("#zymempass").val();
+	$.ajax(
+		{
+			url:"member/login",
+			data:{zymemid:zymemid,zymempass:zymempass},
+					success:function(result){
+						//alert(result);
+						if(result.indexOf("success")!=-1){
+							window.location.href="dismenu.html";
+						}else{
+							$("#ts").html("无效的帐号或密码");
+						}
+    		}
+		}
+	);
+}
+</script>
+</head>
+<body id="account-login" data-com="pagecommon" data-page-id="100040"
+	data-iswebview='false'>
+	<header class="navbar">
+		<span class="nav-header h1">登录</span>
+	</header>
+	<div id="login">
+		<dl class="list">
+			<dd class="nav">
+				<ul class="taba taban samfix" data-com="tab">
+					<li class="active"><a class="react" id="ts">帐号登录</a>
+				</ul>
+			</dd>
+		</dl>
+		<form id="normal-login-form"  autocomplete="off"
+			method="post" style="display: block">
+			<input type="hidden" id="op" name="op" value="login">
+			<dl class="list list-in">
+				<dd class="visibale">
+					<dl>
+						<dd class="dd-padding kv-line-r">
+							<input id="zymemid"
+								class="input-weak J-login-name J-input J-account" type="text"
+								placeholder="账户名/Email" name="zymemid" value="" required>
+							<div class="to-del J-to-del" style="display: none"></div>
+						</dd>
+						<dd class="dd-padding kv-line-r">
+							<input id="zymempass" class="input-weak J-input" type="password"
+								placeholder="请输入您的密码" name="zymempass" required />
+							<div class="to-del J-to-del" style="display: none"></div>
+						</dd>
+					</dl>
+				</dd>
+			</dl>
+			<div class="btn-wrapper">
+				<button type="button"  onclick="login()"
+					class="btn btn-normal btn-block disabled mj_login login-btn">登录</button>
+			</div>
+		</form>
+	</div>
+	<ul class="subline" style="text-align: center;">
+        <li><a href="register.html">立即注册</a>
+    </ul>
+	<div id="qrcode" style="width:100px; height:100px; margin-top:15px;"></div>
+	<script type="text/javascript">
+		//初始化存放二维码的div
+		var qrcode = new QRCode(document.getElementById("qrcode"), {
+			width : 100,
+			height : 100
+		});
+		//window.location.href获取到URL
+
+		qrcode.makeCode("http://192.168.13.192:8080/kuangjia2/login.html");
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zy.mapper.MenuMapper">
+    <insert id="insert" parameterType="Map" useGeneratedKeys="true" keyProperty="zyid" keyColumn="zyid">
+               insert into zymenu(zyname,zyprice,zyremark,zypic,zysellid) values(#{zyname},#{newprice},#{zyremark},#{pic},#{zysellid})
+    </insert>
+<select id="getList" parameterType="Map" resultType="Map">
+        select m.zyid,m.zyname,m.zyprice,m.zypic,m.zyremark from zymenu m,zyseller s where m.zysellid=s.zyid and s.zyname=#{sellzyname}
+    <if test="zyname!=null">
+            and m.zyname like '%${zyname}%'
+        </if>
+</select>
+    <delete id="delete" parameterType="Map" >
+--menuid是什么类型
+        delete from zymenu where zyid=#{zymenuid}
+    </delete>
+</mapper>

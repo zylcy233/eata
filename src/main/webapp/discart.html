@@ -1,0 +1,382 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>购物车</title>
+    <meta name="applicable-device" content="mobile">
+    <meta name="viewport"
+          content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name='apple-touch-fullscreen' content='yes'>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link href="css/mtc.css" rel="stylesheet">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+
+</head>
+<body id="index" data-com="pagecommon" data-page-id="100001"
+      data-iswebview='false'>
+
+<style>
+    .navbar {
+        height: 1.01rem;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        position: relative;
+        background-image: linear-gradient(135deg, #FFD000 0%, #FFBD00 100%);
+        border: none;
+    }
+
+    .navbar .nav-city {
+        display: inline-block;
+        vertical-align: middle;
+        text-align: center;
+        font-family: PingFangSC-Medium;
+        font-size: 0.28rem;
+        color: #222222;
+        margin: 0.31rem 0 0.31rem 0.37rem;
+    }
+
+    .navbar .box-search {
+        -webkit-box-flex: 1;
+        -ms-flex: 1;
+        line-height: .64rem;
+        -webkit-box-sizing: border-box;
+        position: relative;
+        margin-top: .2rem;
+        opacity: 0.9;
+        background: #FFFFFF;
+        border-radius: 0.18rem;
+        width: 4.85rem;
+        height: 0.64rem;
+        color: #999999;
+    }
+
+    .navbar .box-search span {
+        font-size: .26rem;
+        box-sizing: border-box;
+        width: 100%;
+        color: #999999;
+        padding-left: 0rem;
+        display: contents;
+    }
+
+    .nav-city img.icn_down {
+        width: 0.16rem;
+        height: 0.09rem;
+        padding-right: 0.315rem;
+        margin-left: -0.1rem;
+        margin-top: -0.07rem;
+    }
+
+    .nav-wrap-right img.icn_mine {
+        width: 0.48rem;
+        height: 0.48rem;
+    }
+
+    a.react img.icn_search {
+        width: 0.28rem;
+        height: 0.28rem;
+        padding: 0.15rem 0.13rem 0.16rem 0.27rem;
+    }
+
+    a.react .nav-btn img.icn_home {
+        width: 0.48rem;
+        height: 0.48rem;
+    }
+
+    a.back img.icn_back {
+        width: 0.2rem;
+        height: 0.36rem;
+    }
+
+    .navbar .h1.nav-header {
+        font-family: PingFangSC-Regular;
+        font-size: 0.32rem;
+        color: #222222;
+    }
+
+    .nav-btn img.icn_search_2 {
+        width: 0.48rem;
+        height: 0.48rem;
+        padding-right: 0.2rem;
+    }
+
+    .nav-btn img.icn_edit {
+        width: 0.48rem;
+        height: 0.48rem;
+    }
+
+    .nav-btn img.icn_menu {
+        width: 0.48rem;
+        height: 0.48rem;
+    }
+
+    img.icn_drop_home, img.icn_drop_mine, img.icn_drop_search {
+        width: 0.48rem;
+        height: 0.48rem;
+    }
+
+    .navbar .nav-dropdown {
+        position: absolute;
+        right: .04rem;
+        top: 1rem;
+        width: 2rem;
+        opacity: 1;
+        -webkit-transition: height .1s;
+        background: #FFFFFF;
+        color: #222222;
+        box-shadow: 0 0.12rem 0.6rem 0 rgba(196, 196, 196, 0.60);
+        border-radius: 0.1rem;
+        overflow: visible;
+        z-index: 100;
+        display: none;
+    }
+
+    .nav-dropdown li {
+        height: .83rem;
+        line-height: .83rem;
+        border-bottom: none;
+        text-align: center;
+    }
+
+    .nav-dropdown.active {
+        display: block !important;
+        height: 2.5rem;
+        width: 2rem;
+    }
+
+    .navbar .nav-dropdown:before {
+        content: "";
+        background-image: url('https://p0.meituan.net/travelcube/dc0f73a6ecc53ad44da9d5bc10ceff96421.png');
+        background-size: contain;
+        display: block;
+        width: 0.38rem;
+        height: 0.12rem;
+        position: absolute;
+        top: -0.12rem;
+        right: 0.2rem;
+        box-shadow: 0 0 0 0 rgba(196, 196, 196, 0.60);
+        border-radius: 0.05rem;
+    }
+</style>
+
+
+<header class="navbar">
+    <div class="nav-wrap-left">
+        <a href="//i.meituan.com/index/changecity" class="react"> <span
+                class="nav-city">南京<space></space> <img
+                src="https://p0.meituan.net/travelcube/45c79a92755b54adc9dc1c4682b123b3201.png"
+                class="icn_down"/>
+			</span>
+        </a>
+    </div>
+    <div class="box-search J-box-search">
+        <input id="keyword" type="text" style="width: 100%;"
+               placeholder="请输入菜名" value=""/>
+    </div>
+    <div class="nav-wrap-right">
+        <a class="react" href="javascript:void(0)" onclick="getMenu()"> <span
+                class="nav-btn"> <img
+                src="https://p0.meituan.net/travelcube/641521461179df7cfb88738dd1ea11ec1031.png"
+                class="icn_mine"/>
+			</span>
+        </a>
+    </div>
+</header>
+
+<div id="guessLike" class="guess-like">
+    <dl class="list">
+
+        <div style="font-size: 20px; color: #ffc100; padding-top: 2px;">我的购物车</div>
+        <hr/>
+        <mtc id="caidan"></mtc>
+        <dd class="db">
+
+        </dd>
+
+    </dl>
+</div>
+<div align="center">
+    <br> <br> <br> <br>
+    <input id="all" type="checkbox" value=""/>
+    <label for="all">全选</label>
+	<div class="totalPrice">
+		总计：{{totalPrice}}元
+	</div>
+    <button
+            style="width: 20%;" type="button" id="settlement" onclick="settlement()"
+            class="btn btn-normal btn-block disabled mj_settlement settlement-btn">结算
+    </button>
+    </a>
+    <a href="login.html" style="">
+        <button onclick="logout()"
+                style="width: 20%;" type="submit" id="login"
+                class="btn btn-normal btn-block disabled mj_login login-btn">注销
+        </button>
+    </a>
+    <a href="dismenu.html">
+        <button style="width: 30%;" type="submit" id="login"
+                class="btn btn-normal btn-block disabled mj_login login-btn">继续购物
+        </button>
+    </a>
+
+
+</div>
+
+</body>
+<script type="text/javascript">
+    $('#all').click(function () {
+        if ($(this)[0].checked) {
+            // 全选
+            $(" .zyida:checkbox").prop("checked", true)
+        } else {
+            //全不选
+            $(" .zyida:checkbox").prop("checked", false)
+        }
+    })
+
+
+    function getCart() {
+        var zyname = $("#keyword").val();
+        $.ajax({
+            type: "post",
+            url: "cart/getcart?zyname=" + zyname,
+            success: function (menus) {
+                console.log(menus);
+                // var menus=eval("("+result+")");
+                var dis = "";
+                for (var i = 0; i < menus.length; i++) {
+                    dis = dis + "<input type='checkbox' id='zyid' name='zyid' value='" + menus[i].ZYID + "' class='zyida'  data-value='cnt'> ";
+                    dis = dis + "<dd> <a href='javascript:void(0)' class='react'>";
+                    dis = dis + "<div class='dealcard'>";
+                    dis = dis + "<div class='dealcard-img imgbox' style='background: rgba(0, 0, 0, 0) none repeat scroll 0% 0%;'>";
+                    dis = dis + "<img width='30px' height='80px' src='upload/" + menus[i].ZYPIC + "' style='width:100%;'></div>";
+                    dis = dis + "<div class='dealcard-block-right'>";
+                    dis = dis + "<div class='dealcard-brand single-line'>" + menus[i].ZYNAME + "</div>";
+                    dis = dis + "<div class='dealcard-brand single-line'>" + menus[i].ZYREMARK + "</div>";
+                    dis = dis + "<div class='price'>";
+                    dis = dis + "<span class='strong' id='zyprice' >" + menus[i].ZYPRICE + "</span><span class='strong-color'>元</span>";
+                    dis = dis + "<div class='number'><input id='' type='number' name='quantity' value='1'></div>"
+                    dis = dis + "<span class='line-right'><input type='image' src='img/del.png' border='0' width=20px height=20px' onclick='addCart(" + menus[i].ZYID +",\""+
+                        menus[i].ZYNAME+"\",\""+menus[i].ZYPPRICE+ "\")'> </span>";
+                    dis = dis + "</div></div></div></a></dd>";
+                }
+                //alert(dis);   <mtc id="caidan"></mtc>
+                $("#caidan").html(dis);
+            }
+        });
+    }
+
+
+	function settlement() {
+        const formdata = new FormData;
+        // var items = document.querySelectorAll('input[name="zyid"]:checked');
+        var quantity = document.querySelectorAll('input[name="quantity"]');
+        var data = [];
+        var inner = [];
+        var items = document.querySelectorAll('input[name="zyid"]');
+        var zyid = [];
+        var number=[];
+        for (var i = 0; i < items.length; i++) {
+            if (items[i].checked == true) {
+                // zyid.push(items[i].value)
+                // fordata.append("zymenuid", items[i].value)
+				zyid.push(items[i].value);
+				formdata.append("zymenuid",items[i].value);
+				number.push(quantity[i].value);
+			}
+		}
+		for (const [key, value] of formdata.entries()) {
+			console.log(key, value);
+		}
+		const zymenuidValue = formdata.get("zymenuid");
+		console.log(zymenuidValue);
+		// data.push(zyid);
+		// fordata.append("zymenuid",zyid);
+        alert(formdata);
+        alert(number);
+
+
+// 假设dis是一个字符串变量，用于拼接HTML代码
+// ...
+// dis = dis + "<input type='checkbox' ... >" + ...; // 之前的代码拼接复选框
+
+// 当需要获取被选中的复选框的值时
+//         var checkedValues = []; // 用来存储被选中的复选框的值的数组
+//
+// // 使用querySelectorAll选择所有的复选框
+//         var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+//
+// // 遍历所有的复选框
+//         checkboxes.forEach(function (checkbox) {
+//         	var inner =[];
+//         	var number=[];
+//             // 如果复选框被选中
+//             if (checkbox.checked) {
+//                 // 将复选框的值添加到数组中
+//                 inner.push(checkbox.value);
+//                 inner.push(document.querySelectorAll('input[name="quantity"]'));
+//             }
+// 			checkedValues.push(inner);
+//         });
+//
+// // 现在checkedValues数组包含了所有被选中的复选框的值
+//        alert(checkedValues)
+        // for (var i = 0; i <= items.length; i++) {
+        // 	ids.push(items[i].value);
+        // }
+
+
+        if (zyid.length > 0) {
+            $.ajax({
+				type:'post',
+                url: "cart/settlement",
+				data:{formdata:formdata},
+                processData: false,
+                contentType: false,
+                success: function (r) {
+                    alert("结算总额为：" + r)
+                }
+            })
+        } else {
+            alert('请选择要结算的商品');
+        }
+
+
+    }
+
+    function addCart(zymenuid,zyname,zyprice) {
+        $.ajax({
+            url: "member/islogin",
+            success: function (result) {
+                //alert(result=="htc_null");
+                if (result == "htc_null") {
+                    alert("你还没登录，请先登录");
+                } else {
+                    $.ajax({
+                        url: "cart/delete?zymenuid=" + zymenuid,
+                        success: function (res) {
+                            alert(res);
+                            location.reload();//加载
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    function logout() {
+
+        $.ajax({
+            url: "member?op=logout",
+            success: function (result) {
+
+            }
+        });
+
+    }
+
+    getCart();
+
+</script>
+</html>

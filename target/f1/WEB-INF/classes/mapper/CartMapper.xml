@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.eat.mapper.CartMapper">
+<insert id="insert" parameterType="Map">
+        insert into zycart(zymenuid,zymemid) values(#{zymenuid},#{zymemid})
+</insert>
+        <select id="getList" parameterType="Map" resultType="Map">
+                select zymenu.zyid,zypic,zyname,zyprice,zyremark  from zymenu,zycart where zymenu.zyid=zycart.zymenuid
+                and zymemid=#{zymemid}
+        </select>
+        <delete id="delete" parameterType="Map">
+                delete from zycart where zymenuid=#{zymenuid} and zymemid=#{zymemid}
+        </delete>
+        <insert id="settlement" parameterType="Map">
+                insert into orders values ()
+        </insert>
+
+</mapper>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.eat.mapper.MemberMapper">
+<select id="getOne" parameterType="Map" resultType="Map">
+         select * from zyMember where zymemid=#{zymemid}
+         <if test="zymempass!=null">
+             and zymempass=#{zymempass}
+         </if>
+</select>
+    <insert id="insert" parameterType="Map">
+        insert into zyMember(zymemid,zymempass,zymemalias) values(#{zymemid},#{zymempass},#{zymemalias})
+    </insert>
+
+</mapper>

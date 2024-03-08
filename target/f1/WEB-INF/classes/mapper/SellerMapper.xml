@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.eat.mapper.SellerMapper">
+<select id="getOne" parameterType="Map" resultType="Map">
+        select * from zyseller where zyname=#{zyname}
+        <if test="zypass!=null">
+                and zypass=#{zypass}
+        </if>
+</select>
+        <insert id="insert" parameterType="Map">
+                insert into zyseller(zyname,zypass,zytel,zyaddr) values(#{zyname},#{zypass},
+                #{zytel},#{zyaddr})
+        </insert>
+
+</mapper>
